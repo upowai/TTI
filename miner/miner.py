@@ -121,7 +121,7 @@ async def start_miner(pipe, device_name):
                         pipe, prompt, negative_prompt, seed, width, height, device_name
                     )
                     if image:
-                        path, name = save_image(image, device_name)
+                        path, name = save_image(image, config.DEVICE)
                         metadata = {
                             "task_id": task_id,
                             "wallet_address": config.WALLET_ADDRESS,
@@ -164,7 +164,7 @@ async def start_miner(pipe, device_name):
 async def start_server():
     logging.info("Starting Miner...")
     try:
-        device_number = config.DEVICE
+        device_number = int(config.DEVICE)
         device_name = get_device(device_number)
 
         model_path = "amajicmixRealistic_v7"

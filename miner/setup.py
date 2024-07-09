@@ -2,7 +2,6 @@ import os
 import logging
 import subprocess
 import sys
-from urllib.request import urlretrieve
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s:%(levelname)s - %(message)s"
@@ -17,9 +16,11 @@ DUMP_PATH = "amajicmixRealistic_v7/"
 def download_model(url, filename):
     try:
         logging.info(f"Downloading model from {url} to {filename}")
-        urlretrieve(url, filename)
+        subprocess.run(
+            ["wget", url, "--content-disposition", "-O", filename], check=True
+        )
         logging.info("Download completed successfully")
-    except Exception as e:
+    except subprocess.CalledProcessError as e:
         logging.error(f"Failed to download model: {e}")
         sys.exit(1)
 
