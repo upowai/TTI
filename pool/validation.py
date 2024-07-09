@@ -149,7 +149,7 @@ def fetch_validators(validators):
 def fetch_peer_periodically():
     interval = base["TIME"]["FETCH_PEER_SEC"]
     while True:
-        vals = fetch_validators("http://0.0.0.0:8001/validators")
+        vals = fetch_validators(base["INODE_INFO"]["URL"])
         logging.info(f"validators: {vals}")
         save_valid_peers_to_json(vals)
         time.sleep(interval)

@@ -1,11 +1,13 @@
 import requests
 import hashlib
+from utils.layout import base
 
-API_URL = "http://0.0.0.0:8003"
+
+API_URL = base["INODE_INFO"]["MINE"]
 
 
 def get_challenge():
-    response = requests.get(f"{API_URL}/generate_challenge/")
+    response = requests.get(f"{API_URL}")
     print("response", response)
     return response.json()
 

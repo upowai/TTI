@@ -24,7 +24,7 @@
   },
   "URLS": {
     "API_URL": "https://api.upow.ai",
-    "config_2": "value_2",
+    "MINE": "http://0.0.0.0:9003/generate_challenge/",
     "config_3": "value_3"
   },
   "TIME": {
