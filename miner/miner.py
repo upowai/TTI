@@ -188,7 +188,7 @@ async def start_server():
 
 try:
     log_device_info()
-    clear_directory("./c_task/")
+
     args = parse_args()
 
     if not is_valid_address(args.WALLET_ADDRESS):
