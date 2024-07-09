@@ -27,15 +27,15 @@
   "VALIDATOR_SOCKET": {
     "SERVER_IP": "0.0.0.0",
     "IP": "0.0.0.0",
-    "PORT": "5502"
+    "PORT": "4402"
   },
   "ENDPOINT": {
-    "VALIDATOR_URL": "http://0.0.0.0:8002"
+    "VALIDATOR_URL": "http://0.0.0.0:9002"
   },
   "INODE_INFO": {
     "INODE_IP": "0.0.0.0",
-    "INODE_PORT": 5501,
-    "POOL_URL": "http://0.0.0.0:8001/pools"
+    "INODE_PORT": 4401,
+    "POOL_URL": "http://0.0.0.0:9001/pools"
   },
   "VALIDATOR_WALLETS": {
     "VAL_ADDRESS": "DseZNohbj5NN2XzFUaioufN6jgMNqwQaMYGG2x8rGxkoH",

@@ -27,7 +27,7 @@
   },
   "INODE_MAIN_SOCKET": {
     "IP": "0.0.0.0",
-    "PORT": "5501"
+    "PORT": "4401"
   },
   "INODE_WALLETS": {
     "WALLET_ADDRESS": "Dsykm6pDTkD93Mx6fh8RBnXi47p2aWy7aaYNKGawjBPYq",

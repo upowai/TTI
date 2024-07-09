@@ -37,11 +37,11 @@
   },
   "POOL_MAIN_SOCKET": {
     "IP": "0.0.0.0",
-    "PORT": "5503"
+    "PORT": "4403"
   },
   "POOL_VALIDATION_SOCKET": {
     "IP": "0.0.0.0",
-    "PORT": "5505"
+    "PORT": "4405"
   },
   "INODE_INFO": {
     "URL": "http://0.0.0.0:9001/validators"
