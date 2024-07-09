@@ -1,0 +1,12 @@
+pool
+.env
+__pycache__
+__pycache__/
+*.pyc
+test.py
+mon.py
+test2.py
+testtask.py
+test3.py
+test4.py
+

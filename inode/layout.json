@@ -1,0 +1,42 @@
+{
+  "FAST_API": {
+    "FAST_API_URL": "0.0.0.0",
+    "FAST_API_PORT": 9001
+  },
+  "MONGOD_DB": {
+    "MONGO_URL": "mongodb://localhost:27017/"
+  },
+  "RATE_LIMIT": {
+    "RATE_LIMIT1": "10/minute",
+    "RATE_LIMIT2": "1/minute"
+  },
+  "AWARD_SYSTEM": {
+    "FEE": "18%",
+    "POOLS_REWARD": "41%",
+    "VALIDATORS_REWARD": "41%"
+  },
+  "URLS": {
+    "API_URL": "https://api.upow.ai",
+    "VALIDATORS_URL": "https://api.upow.ai/get_validators_info?inode="
+  },
+  "TIME": {
+    "CHECK_INTERVAL": 60,
+    "PUSH_TX": 60,
+    "FETCH_VALIDATORS": 600,
+    "DECAY": 600
+  },
+  "INODE_MAIN_SOCKET": {
+    "IP": "0.0.0.0",
+    "PORT": "5501"
+  },
+  "INODE_WALLETS": {
+    "WALLET_ADDRESS": "Dsykm6pDTkD93Mx6fh8RBnXi47p2aWy7aaYNKGawjBPYq",
+    "REWARD_ADDRESS": "Dvhg47J4J2ZgAujAZEJh4PihbWqbyR5BeUKJccNcs7QjC"
+  },
+  "REWARD_TRACKING": {
+    "BLOCK_HEIGHT": 20001
+  },
+  "MAX_CONCURRENT": {
+    "VALIDATORS": 1500
+  }
+}

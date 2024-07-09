@@ -1,0 +1,8 @@
+{
+    "DseZNohbj5NN2XzFUaioufN6jgMNqwQaMYGG2x8rGxkoH": {
+        "Percentage": 100.0,
+        "IP": "0.0.0.0",
+        "Port": "5502",
+        "validator_endpoint": "http://0.0.0.0:8002"
+    }
+}

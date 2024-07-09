@@ -1,0 +1,9 @@
+iNode
+.env
+__pycache__
+__pycache__/
+*.pyc
+test.py
+test2.py
+test3.py
+txt.txt
