@@ -33,6 +33,7 @@ def process_all_transactions():
             asyncio.run(sign_and_push_transactions(pending_transactions))
 
         else:
-            print("No pending transactions to process.")
+
+            logging.info("No pending transactions push.")
     except Exception as e:
         print(f"Error during process_all_transactions_mongodb: {e}")

@@ -13,7 +13,7 @@ from utils.layout import base
 from reward_logic.process_blocks import process_block_rewards
 from protocol.protocol import miner_protocol
 from transaction.batch import process_all_transactions
-from task.task import generate_validation_task
+from task.task import generate_validation_task, delete_old_completed_tasks
 
 
 logging.basicConfig(
@@ -47,6 +47,19 @@ async def periodic_gen_validation_task():
         print(f"Error in periodic_gen_validation_task: {e}")
 
 
+async def periodic_delete_completed_task():
+    try:
+        while True:
+            success, message = await delete_old_completed_tasks()
+            if success:
+                logging.info(f"{message}")
+            else:
+                logging.info(f"{message}")
+            await asyncio.sleep(base["TIME"]["DELETE_TASK"])
+    except Exception as e:
+        print(f"Error in periodic_delete_completed_task: {e}")
+
+
 def update_balance_periodically():
     try:
         while True:
@@ -71,18 +84,23 @@ async def main():
 
     periodic_task = asyncio.create_task(periodic_process_transactions())
     periodic_validation_task = asyncio.create_task(periodic_gen_validation_task())
+    periodic_delete_task = asyncio.create_task(periodic_delete_completed_task())
 
     try:
-        await asyncio.gather(periodic_task, periodic_validation_task)
+        await asyncio.gather(
+            periodic_task, periodic_validation_task, periodic_delete_task
+        )
     except KeyboardInterrupt:
         logging.info("Shutting down Pool due to KeyboardInterrupt.")
     finally:
         logging.info("Pool shutdown process starting.")
         periodic_task.cancel()
         periodic_validation_task.cancel()
+        periodic_delete_task.cancel()
         await asyncio.gather(
             periodic_task,
             periodic_validation_task,
+            periodic_delete_task,
             return_exceptions=True,
         )
         logging.info("Pool shutdown process complete.")

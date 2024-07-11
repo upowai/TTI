@@ -37,7 +37,7 @@ def record_block_transactions(hash_value):
 def analyze_block_rewards():
     output = percentage_match()
     if output is False:
-        logging.info(f"Some issue with Miner/Pool AWARD_SYSTEM")
+        logging.info(f"Some issue with AWARD_SYSTEM")
         return None
     try:
         last_block_height = get_last_block_height()
@@ -156,7 +156,7 @@ def process_block_rewards():
             logging.info(f'All miners Reward: {percentages["82%"]} ')
             logging.info(f'Pool Reward: {percentages["18%"]} ')
         else:
-            logging.info("Skipping rewards for miner and poolowner")
+            logging.info("Skipping rewards for everyone")
     except ValueError as e:
         logging.error(f"Error fetching block data: {e}")
     except Exception as e:

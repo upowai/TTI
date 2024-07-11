@@ -332,6 +332,40 @@ async def handle_miner_response(task_id: str, wallet_address: str, output: bytes
         return False, str(e)
 
 
+async def delete_old_completed_tasks():
+    try:
+        # Define the time limit (15 minutes ago from now)
+        time_limit = datetime.utcnow() - timedelta(minutes=15)
+
+        # Batch processing of documents with status 'completed'
+        batch_size = 1000
+        query = {"status": "completed"}
+        projection = {"_id": 1, "time": 1}
+
+        cursor = AiTask.find(query, projection).batch_size(batch_size)
+
+        to_delete_ids = []
+        for document in cursor:
+            completed_time = document.get("time")
+            if completed_time and datetime.fromisoformat(completed_time) < time_limit:
+                to_delete_ids.append(document["_id"])
+
+        if to_delete_ids:
+            # Delete documents in batches
+            delete_result = AiTask.delete_many({"_id": {"$in": to_delete_ids}})
+            return (
+                True,
+                f"Deleted {delete_result.deleted_count} completed tasks older than 15 minutes.",
+            )
+        else:
+            return True, "No completed tasks older than 15 minutes found to delete."
+
+    except PyMongoError as e:
+        return False, f"An error occurred while accessing the database: {e}"
+    except Exception as e:
+        return False, f"An unexpected error occurred: {e}"
+
+
 # ###########---------------------------------###################################
 
 

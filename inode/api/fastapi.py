@@ -107,11 +107,11 @@ def get_validators():
 
 
 @app.get("/pools")
-def get_validators():
+def get_pools():
     try:
         result = get_pools_list()
         if not result:
-            raise HTTPException(status_code=400, detail="No validators found")
+            raise HTTPException(status_code=400, detail="No pools found")
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

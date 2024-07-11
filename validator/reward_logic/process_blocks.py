@@ -38,7 +38,7 @@ def record_block_transactions(hash_value):
 def analyze_block_rewards():
     output = percentage_match()
     if output is False:
-        logging.info(f"Some issue with validator AWARD_SYSTEM")
+        logging.info(f"Some issue with AWARD_SYSTEM")
         return None
     try:
         last_block_height = get_last_block_height()
@@ -49,20 +49,44 @@ def analyze_block_rewards():
         else:
             last_block_height += 1
 
-        logging.info(f"Starting processing from block height: {last_block_height}")
+        logging.info(
+            f"Tracking blocks in bulk from height {last_block_height} to {last_block_height+4}"
+        )
 
         data = fetch_block(
-            f"{base['URLS']['API_URL']}/get_blocks_details?offset={last_block_height}&limit=10"
+            f"{base['URLS']['API_URL']}/get_blocks_details?offset={last_block_height}&limit=5"
         )
 
         if data is None or not data["result"]:
-            logging.error("No block data retrieved or no new blocks since last check.")
+            logging.error("No new blocks retrieved since the last check.")
             return None
 
         total_amount = 0
         first_block_id = data["result"][0]["block"]["id"]
         last_block_idX = data["result"][-1]["block"]["id"]
         last_block_id = None
+
+        # Fetch current real block height
+        current_block_height_data = fetch_block(
+            f"{base['URLS']['API_URL']}/get_supply_info"
+        )
+
+        if (
+            current_block_height_data is None
+            or "result" not in current_block_height_data
+        ):
+            logging.error("Unable to fetch current block height.")
+            return None
+
+        current_block_height = current_block_height_data["result"]["last_block"]["id"]
+
+        if current_block_height < last_block_idX + 5:
+            needed_block_height = last_block_height + 9
+            logging.info(
+                f"Waiting for 5 blocks to confirm from block {last_block_height+4}. Current height: {current_block_height}. Needed: {needed_block_height}."
+            )
+
+            return None
 
         for block in data["result"]:
             block_id = block["block"]["id"]
@@ -144,7 +168,7 @@ def process_block_rewards():
                 logging.info(f'All delegates Reward: {percentages["82%"]} ')
                 logging.info(f'Validator Reward: {percentages["18%"]} ')
             else:
-                logging.info("Skipping rewards for delegates and validator")
+                logging.info("Skipping rewards for everyone")
         except ValueError as e:
             logging.error(f"Error fetching block data: {e}")
         except Exception as e:

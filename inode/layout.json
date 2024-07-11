@@ -16,11 +16,12 @@
     "VALIDATORS_REWARD": "41%"
   },
   "URLS": {
-    "API_URL": "https://api.upow.ai",
-    "VALIDATORS_URL": "https://api.upow.ai/get_validators_info?inode="
+    "API_URL": "http://45.76.90.129",
+    "NODE_URL": "http://45.76.90.129",
+    "VALIDATORS_URL": "http://45.76.90.129/get_validators_info?inode="
   },
   "TIME": {
-    "CHECK_INTERVAL": 60,
+    "CHECK_INTERVAL": 180,
     "PUSH_TX": 60,
     "FETCH_VALIDATORS": 600,
     "DECAY": 600
@@ -30,11 +31,11 @@
     "PORT": "4401"
   },
   "INODE_WALLETS": {
-    "WALLET_ADDRESS": "Dsykm6pDTkD93Mx6fh8RBnXi47p2aWy7aaYNKGawjBPYq",
-    "REWARD_ADDRESS": "Dvhg47J4J2ZgAujAZEJh4PihbWqbyR5BeUKJccNcs7QjC"
+    "WALLET_ADDRESS": "De2LZCentMEXs97h6TiV9LKaHqtfA2LecneJydVKuT5aX",
+    "REWARD_ADDRESS": "DseZNohbj5NN2XzFUaioufN6jgMNqwQaMYGG2x8rGxkoH"
   },
   "REWARD_TRACKING": {
-    "BLOCK_HEIGHT": 20001
+    "BLOCK_HEIGHT": 2000
   },
   "MAX_CONCURRENT": {
     "VALIDATORS": 1500

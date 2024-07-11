@@ -136,6 +136,10 @@ async def deduct_balance(
     request: Request,
     deduct_request: DeductBalanceRequest,
 ):
+    if deduct_request.amount_to_deduct < 1:
+        raise HTTPException(
+            status_code=400, detail="Amount to deduct must be at least 1"
+        )
     result, response = deduct_balance_from_wallet(
         deduct_request.wallet_address, deduct_request.amount_to_deduct
     )
@@ -151,6 +155,10 @@ async def valowner_deduct_balance(
     request: Request,
     deduct_request: DeductBalancePool,
 ):
+    if deduct_request.amount_to_deduct < 1:
+        raise HTTPException(
+            status_code=400, detail="Amount to deduct must be at least 1"
+        )
     result, response = deduct_balance_from_entityOwners(deduct_request.amount_to_deduct)
     if result is None:
         raise HTTPException(status_code=400, detail=response)
@@ -176,14 +184,14 @@ async def valowner_deduct_balance(
 @app.post("/upload_tasks/")
 async def upload_tasks(validation_task: ValidationTask):
     try:
-
+        print("pass1")
         pool, result = validate_pool_address(validation_task.pool_wallet)
         if not pool:
             raise HTTPException(
                 status_code=400,
                 detail=result,
             )
-
+        print("pass2")
         computed_hash_str = hash_data_for_comparison(validation_task)
         if computed_hash_str != validation_task.hash_str:
             raise HTTPException(
@@ -201,7 +209,7 @@ async def upload_tasks(validation_task: ValidationTask):
                 status_code=400,
                 detail=message,
             )
-
+        print("pass3")
         # Convert Task objects to dictionaries
         task_info = [task.model_dump() for task in validation_task.tasks]
 

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query, Request, Depends
 from fastapi import File, Form, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -9,6 +9,8 @@ from datetime import datetime
 import hashlib
 from pydantic import BaseModel
 import asyncio
+import base64
+import io
 
 from database.mongodb import (
     miners,
@@ -20,6 +22,7 @@ from database.db_requests import (
     get_balance_poolowner,
     deduct_balance_from_wallet,
     deduct_balance_from_poolowner,
+    retrieve_image,
 )
 from utils.layout import base
 
@@ -314,6 +317,10 @@ async def deduct_balance(
     request: Request,
     deduct_request: DeductBalanceRequest,
 ):
+    if deduct_request.amount_to_deduct < 1:
+        raise HTTPException(
+            status_code=400, detail="Amount to deduct must be at least 1"
+        )
     result, response = deduct_balance_from_wallet(
         deduct_request.wallet_address, deduct_request.amount_to_deduct
     )
@@ -329,6 +336,10 @@ async def poolowner_deduct_balance(
     request: Request,
     deduct_request: DeductBalancePool,
 ):
+    if deduct_request.amount_to_deduct < 1:
+        raise HTTPException(
+            status_code=400, detail="Amount to deduct must be at least 1"
+        )
     result, response = deduct_balance_from_poolowner(deduct_request.amount_to_deduct)
     if result is None:
         raise HTTPException(status_code=400, detail=response)
@@ -371,3 +382,20 @@ async def upload_image(
         return JSONResponse(content={"status": "success", "data": response})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/retrieve_image/{retrieve_id}")
+async def get_image(retrieve_id: str):
+    success, result = retrieve_image(retrieve_id)
+
+    if not success:
+        raise HTTPException(status_code=404, detail=result)
+
+    if result == "your image is being generated please wait":
+        return JSONResponse(status_code=202, content={"message": result})
+
+    try:
+        image_data = base64.b64decode(result)
+        return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error decoding image: {str(e)}")

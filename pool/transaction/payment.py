@@ -7,6 +7,7 @@ from datetime import datetime
 import utils.config as config
 from api.api_client import test_api_connection
 import uuid_utils as uuid
+from utils.layout import base
 
 from database.mongodb import (
     tempWithdrawals,
@@ -24,7 +25,7 @@ logging.basicConfig(
 
 
 utils_instance = upow_utils.Utils()
-utils_instance.set_node_url("https://api.upow.ai")
+utils_instance.set_node_url(base["URLS"]["NODE_URL"])
 
 
 def round_up_decimal_new(decimal: Decimal, round_up_length: str = "0.00000001"):
@@ -50,7 +51,9 @@ async def sign_and_push_transactions(transactions):
                 )
                 await asyncio.sleep(1)
                 if transaction_hash:
-                    logging.info(f"transaction_hash: {transaction_hash}")
+                    logging.info(
+                        f"PUSHED: transaction_hash: {transaction_hash} | type: {transaction_type} | to  {wallet_address} | amount:  {amounts}"
+                    )
                     transaction_doc = {
                         "wallet_address": wallet_address,
                         "id": id,

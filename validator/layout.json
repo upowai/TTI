@@ -15,12 +15,12 @@
     "DELEGATE_REWARD": "82%"
   },
   "URLS": {
-    "API_URL": "https://api.upow.ai",
-    "config_2": "value_2",
+    "API_URL": "http://45.76.90.129",
+    "NODE_URL": "http://45.76.90.129",
     "config_3": "value_3"
   },
   "TIME": {
-    "CHECK_INTERVAL": 60,
+    "CHECK_INTERVAL": 180,
     "PUSH_TX": 60,
     "PING_TIME": 60
   },
@@ -38,11 +38,11 @@
     "POOL_URL": "http://0.0.0.0:9001/pools"
   },
   "VALIDATOR_WALLETS": {
-    "VAL_ADDRESS": "DseZNohbj5NN2XzFUaioufN6jgMNqwQaMYGG2x8rGxkoH",
-    "VAL_REWARD_ADDRESS": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    "VAL_ADDRESS": "Db2pV214jVqNwcF3ML6CEW8Bgi9ekVw2pANya56BeWvMR",
+    "VAL_REWARD_ADDRESS": "DseZNohbj5NN2XzFUaioufN6jgMNqwQaMYGG2x8rGxkoH"
   },
   "REWARD_TRACKING": {
-    "BLOCK_HEIGHT": 20001
+    "BLOCK_HEIGHT": 2000
   },
   "MAX_CONCURRENT": {
     "POOLS": 1500

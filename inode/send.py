@@ -6,10 +6,14 @@ import os
 import base64
 from dotenv import load_dotenv
 import argparse
+from utils.layout import base
 
 
 dotenv_path = ".env"
 load_dotenv(dotenv_path)
+API_URL = (
+    f"http://{base['FAST_API']['FAST_API_URL']}:{base['FAST_API']['FAST_API_PORT']}"
+)
 
 
 def load_public_key():
@@ -40,9 +44,7 @@ def encrypt_message(public_key, message):
 
 def send_request(encrypted_message):
     try:
-        response = requests.post(
-            "http://localhost:8001/modify-pool-list/", data=encrypted_message
-        )
+        response = requests.post(f"{API_URL}/modify-pool-list/", data=encrypted_message)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:

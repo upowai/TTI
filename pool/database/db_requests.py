@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from database.mongodb import userStats, entityOwners, miners
+from database.mongodb import userStats, entityOwners, miners, AiTask, ResponseTask
 from reward_logic.percentage import round_up_decimal_new
 from transaction.payment import add_transaction_to_batch
 
@@ -29,7 +29,9 @@ def check_active_users(batch_size=1000):
 
 def get_balance_from_wallet(wallet_address):
     try:
+        print("wallet_address", wallet_address)
         user = userStats.find_one({"wallet_address": wallet_address}, {"balance": 1})
+        print("user", user)
         if user is None:
             return "Error: Wallet address not found."
 
@@ -193,3 +195,24 @@ def white_list(wallet_address):
             return False
     except Exception as e:
         return False, f"Error: {str(e)}"
+
+
+def retrieve_image(retrieve_id=None):
+    if not retrieve_id:
+        return False, "retrieve_id parameter is missing."
+    try:
+        response_task_doc = ResponseTask.find_one({"retrieve_id": retrieve_id})
+
+        if response_task_doc:
+            output = response_task_doc.get("output", None)
+            return True, output
+
+        ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
+
+        if not ai_task_doc:
+            return False, "image not found or deleted."
+
+        return True, "your image is being generated please wait"
+
+    except Exception as e:
+        return False, str(e)

@@ -23,7 +23,7 @@ def test_db_connection():
 
 def get_db_connection():
     client = MongoClient(base["MONGOD_DB"]["MONGO_URL"])
-    return client.val
+    return client.valdb
 
 
 # Initialize the connection

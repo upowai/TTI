@@ -11,7 +11,8 @@ import utils.config as config
 import logging
 
 # Define the private key for signing
-private_key = config.PRIVATEKEY
+private_key_hex = config.PRIVATEKEY
+private_key = int(private_key_hex, 16)
 CURVE = curve.P256
 
 logging.basicConfig(
@@ -27,21 +28,29 @@ def hash_data(data):
 
 
 def sign_data(hash_str, private_key):
-    return ecdsa.sign(hash_str, private_key, curve=CURVE)
+    try:
+        print("sign_data", hash_str, private_key)
+        r, s = ecdsa.sign(hash_str, private_key, curve=CURVE)
+        return r, s
+    except Exception as e:
+        print(f"Error in sign_data: {str(e)}")
+        raise
 
 
 def upload_images_to_endpoint(endpoint_url):
     try:
+        print("pass1")
         # Retrieve the document
         document = ValidationTask.find_one()
         if not document:
             return False, json.dumps({"status": False, "message": "No tasks found"})
 
+        print("pass2")
         current_time = datetime.utcnow()
         task_created_at = datetime.strptime(
             document["task1"]["createdAt"], "%Y-%m-%dT%H:%M:%S.%f"
         )
-
+        print("pass3")
         time_difference = current_time - task_created_at
 
         timer = base["TIME"]["VALIDATION_DELETE_TIMER"]
@@ -57,7 +66,7 @@ def upload_images_to_endpoint(endpoint_url):
                         "error": f"Task is pending/dispatch for more than {timer} minutes, hence deleted"
                     }
                 )
-
+        print("pass4")
         # Check the condition
         if document["task1"]["condition"] != "dispatch":
             return False, json.dumps({"error": "Task condition is not dispatch"})
@@ -65,6 +74,7 @@ def upload_images_to_endpoint(endpoint_url):
         # Extract tasks from the array
         tasks = document.get("task1", {}).get("array", [])
 
+        print("pass5")
         # Prepare the main data dictionary
         data = {
             "val_id": document.get("task1", {}).get("val_id"),
@@ -76,6 +86,7 @@ def upload_images_to_endpoint(endpoint_url):
             "tasks": [],
         }
 
+        print("pass6")
         # Prepare data for signing (excluding output)
         sign_data_dict = {
             "val_id": data["val_id"],
@@ -86,7 +97,7 @@ def upload_images_to_endpoint(endpoint_url):
             "createdAt": data["createdAt"],
             "tasks": [],
         }
-
+        print("pass7")
         # Loop through each task and add to the data dictionary
         for task in tasks:
             task_id = task.get("id")
@@ -96,6 +107,7 @@ def upload_images_to_endpoint(endpoint_url):
                 print(f"No output for task {task_id}")
                 continue
 
+            print("pass8")
             # Encode the image data to base64
             task_output_base64 = base64.b64encode(task_output).decode("utf-8")
 
@@ -115,32 +127,46 @@ def upload_images_to_endpoint(endpoint_url):
                 "message_type": task.get("message_type"),
             }
 
+            print("pass9")
+
             # Create a task dictionary including the output for uploading
             task_data = task_data_for_signing.copy()
             task_data["output"] = task_output_base64
 
+            print("pass10")
             # Add the task-specific data to the lists
             sign_data_dict["tasks"].append(task_data_for_signing)
             data["tasks"].append(task_data)
 
+        print("pass11")
         # Hash the data for signing
         hash_str = hash_data(sign_data_dict)
 
+        print("passboot")
         # Sign the hash
-        r, s = sign_data(hash_str, private_key)
+        try:
+            r, s = sign_data(hash_str, private_key)
+            print("r, s", r, s)
+        except Exception as e:
+            print(f"Error signing data: {str(e)}")
+            return False, json.dumps({"status": False, "message": "Error signing data"})
 
         # Convert r and s to strings and combine them
         signature = f"{r},{s}"
 
+        print("signature", signature)
+
+        print("pass12")
         # Add the signature to the data
         data["signature"] = signature
         data["hash_str"] = hash_str
 
         endpoint_url = f"{endpoint_url}/upload_tasks/"
-
+        print("pass13", endpoint_url)
         # Upload the data to the endpoint
         response = requests.post(endpoint_url, json=data)
         response.raise_for_status()  # Raise an exception for HTTP errors
+        logging.info("task was sent from")
 
         return True, response.json()
 
