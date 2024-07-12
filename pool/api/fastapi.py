@@ -396,10 +396,10 @@ async def get_image(retrieve_id: str):
     success, result = retrieve_image(retrieve_id)
 
     if not success:
-        raise HTTPException(status_code=404, detail=result)
-
-    if result == "your image is being generated please wait":
-        return JSONResponse(status_code=202, content={"message": result})
+        if result.get("error") == "Your image is being generated, please wait.":
+            raise HTTPException(status_code=202, detail=result)
+        else:
+            raise HTTPException(status_code=404, detail=result)
 
     try:
 
