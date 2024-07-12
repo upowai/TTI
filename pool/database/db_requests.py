@@ -242,6 +242,6 @@ def retrieve_image(retrieve_id=None):
             if not ai_task_doc:
                 return False, "Image not found or deleted."
 
-            return True, "Your image is being generated, please wait."
+            return False, "Your image is being generated, please wait."
     except Exception as e:
         return False, str(e)
