@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from database.mongodb import userStats, entityOwners, miners, AiTask, ResponseTask
 from reward_logic.percentage import round_up_decimal_new
 from transaction.payment import add_transaction_to_batch
+import base64
+from bson.binary import Binary
 
 from decimal import Decimal, InvalidOperation
 
@@ -205,6 +207,8 @@ def retrieve_image(retrieve_id=None):
 
         if response_task_doc:
             output = response_task_doc.get("output", None)
+            if isinstance(output, Binary):
+                output = base64.b64encode(output).decode("utf-8")
             return True, output
 
         ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
