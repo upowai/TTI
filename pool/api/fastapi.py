@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 import hashlib
 from pydantic import BaseModel
+from typing import Optional
 import asyncio
 import base64
 import io
@@ -26,7 +27,7 @@ from database.db_requests import (
 )
 from utils.layout import base
 
-from task.task import handle_miner_response
+from task.task import handle_miner_response, generate_task
 
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
@@ -74,6 +75,12 @@ class SubmitData(BaseModel):
     previous_hash: str
     difficulty: int
     target: str
+
+
+class TaskResponse(BaseModel):
+    success: bool
+    retrieve_id: Optional[str] = None
+    error: Optional[str] = None
 
 
 def generate_target(difficulty):
@@ -403,3 +410,20 @@ async def get_image(retrieve_id: str):
         return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error decoding image: {str(e)}")
+
+
+@app.get("/generate-task", response_model=TaskResponse)
+async def generate_task_endpoint(prompt: Optional[str] = Query(None)):
+    try:
+        if not prompt:
+            return TaskResponse(success=False, error="No prompt provided.")
+
+        result = await generate_task(prompt)
+
+        if result.get("success"):
+            return TaskResponse(success=True, retrieve_id=result.get("retrieve_id"))
+        else:
+            return TaskResponse(success=False, error=result.get("error"))
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -27,11 +27,13 @@ logging.basicConfig(
 )
 
 
-async def generate_task():
-    # This function was created as a simulation of generate_task user-given task from the database. You can modify it to suit your specific requirements.
+async def generate_task(prompt=None):
+    if prompt is None:
+        logging.error("No prompt provided.")
+        return {"success": False, "error": "No prompt provided."}
+
     try:
         # Generate random text for the task
-        prompt = generate_random_image_prompt()
         negative_prompt = base["PROMPT"]["NEGATIVE"]
         width = base["PROMPT"]["WIDTH"]
         height = base["PROMPT"]["HEIGHT"]
@@ -64,12 +66,12 @@ async def generate_task():
         insert_result = AiTask.insert_one(task_document)
         # Check if the insertion was acknowledged by MongoDB
         if insert_result.acknowledged:
-            return True
+            return {"success": True, "retrieve_id": retrieve_id}
         else:
-            return False
+            return {"success": False, "error": "Insertion not acknowledged."}
     except Exception as e:
         logging.error(f"An error occurred in generate_task: {e}")
-        return False
+        return {"success": False, "error": str(e)}
 
 
 async def generate_automatic_task(walletAddress):
