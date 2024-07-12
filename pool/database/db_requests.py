@@ -235,6 +235,7 @@ def retrieve_image(retrieve_id=None):
 
             if isinstance(output, Binary):
                 output = base64.b64encode(output).decode("utf-8")
+
             return True, output
         else:
             return False, "Document not found."

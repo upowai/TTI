@@ -395,7 +395,11 @@ async def get_image(retrieve_id: str):
         return JSONResponse(status_code=202, content={"message": result})
 
     try:
-        image_data = base64.b64decode(result)
+
+        if isinstance(result, str):
+            image_data = base64.b64decode(result)
+        else:
+            image_data = result
         return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error decoding image: {str(e)}")
