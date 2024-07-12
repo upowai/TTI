@@ -237,7 +237,7 @@ async def find_task(wallet_address):
 async def store_response(task_id, wallet_address, output, retrieve_id):
     try:
         # Calculate the expiration time
-        expire_at = datetime.utcnow() + timedelta(minutes=3)
+        expire_at = datetime.utcnow() + timedelta(minutes=15)
 
         # Create the response document
         response_document = {
