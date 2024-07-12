@@ -362,26 +362,26 @@ async def poolowner_deduct_balance(
 #     return result.get("data", {})
 
 
-@app.get("/retrieve_image/{retrieve_id}")
-async def get_image(retrieve_id: str):
-    success, result = retrieve_image(retrieve_id)
-
-    if not success:
-        raise HTTPException(status_code=404, detail=result)
-
-    if result == "your image is being generated please wait":
-        return JSONResponse(status_code=202, content={"message": result})
-
+@app.post("/task_upload")
+async def upload_image(
+    task_id: str = Form(...),
+    wallet_address: str = Form(...),
+    file: UploadFile = File(...),
+):
     try:
+        image_bytes = await file.read()
+        # Check if the file size exceeds 3 MB (3 * 1024 * 1024 bytes)
+        if len(image_bytes) > 3 * 1024 * 1024:
+            raise HTTPException(
+                status_code=400,
+                detail="File size exceeds 3 MB",
+            )
+        await asyncio.sleep(20)
 
-        if isinstance(result, str):
-            image_data = base64.b64decode(result)
-        else:
-            image_data = result
-        print("image_data", image_data)
-        return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
+        response = await handle_miner_response(task_id, wallet_address, image_bytes)
+        return JSONResponse(content={"status": "success", "data": response})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error decoding image: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/retrieve_image/{retrieve_id}")
@@ -395,9 +395,7 @@ async def get_image(retrieve_id: str):
         return JSONResponse(status_code=202, content={"message": result})
 
     try:
-        print("result", result)
-        image_data = base64.b64decode(result.encode("utf-8"))
-        print("image_data", image_data)
+        image_data = base64.b64decode(result)
         return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error decoding image: {str(e)}")
