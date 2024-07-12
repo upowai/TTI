@@ -238,6 +238,10 @@ def retrieve_image(retrieve_id=None):
 
             return True, output
         else:
-            return False, "Document not found."
+            ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
+            if not ai_task_doc:
+                return False, "Image not found or deleted."
+
+            return True, "Your image is being generated, please wait."
     except Exception as e:
         return False, str(e)
