@@ -231,7 +231,10 @@ def retrieve_image(retrieve_id=None):
         if response_task_doc:
             output = response_task_doc.get("output", None)
             if output is None:
-                return False, "Output not found in the document."
+                return False, {
+                    "success": False,
+                    "error": "Output not found in the document.",
+                }
 
             if isinstance(output, Binary):
                 output = base64.b64encode(output).decode("utf-8")
@@ -240,8 +243,11 @@ def retrieve_image(retrieve_id=None):
         else:
             ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
             if not ai_task_doc:
-                return False, "Image not found or deleted."
+                return False, {"success": False, "error": "Image not found or deleted."}
 
-            return False, "Your image is being generated, please wait."
+            return False, {
+                "success": False,
+                "error": "Your image is being generated, please wait.",
+            }
     except Exception as e:
         return False, str(e)
