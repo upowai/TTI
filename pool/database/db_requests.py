@@ -199,6 +199,29 @@ def white_list(wallet_address):
         return False, f"Error: {str(e)}"
 
 
+# def retrieve_image(retrieve_id=None):
+#     if not retrieve_id:
+#         return False, "retrieve_id parameter is missing."
+#     try:
+#         response_task_doc = ResponseTask.find_one({"retrieve_id": retrieve_id})
+
+#         if response_task_doc:
+#             output = response_task_doc.get("output", None)
+#             if isinstance(output, Binary):
+#                 output = base64.b64encode(output).decode("utf-8")
+#             return True, output
+
+#         ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
+
+#         if not ai_task_doc:
+#             return False, "image not found or deleted."
+
+#         return True, "your image is being generated please wait"
+
+#     except Exception as e:
+#         return False, str(e)
+
+
 def retrieve_image(retrieve_id=None):
     if not retrieve_id:
         return False, "retrieve_id parameter is missing."
@@ -207,16 +230,13 @@ def retrieve_image(retrieve_id=None):
 
         if response_task_doc:
             output = response_task_doc.get("output", None)
+            if output is None:
+                return False, "Output not found in the document."
+
             if isinstance(output, Binary):
                 output = base64.b64encode(output).decode("utf-8")
             return True, output
-
-        ai_task_doc = AiTask.find_one({"retrieve_id": retrieve_id})
-
-        if not ai_task_doc:
-            return False, "image not found or deleted."
-
-        return True, "your image is being generated please wait"
-
+        else:
+            return False, "Document not found."
     except Exception as e:
         return False, str(e)
