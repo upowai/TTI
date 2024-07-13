@@ -68,6 +68,15 @@ def decay_scores_periodically():
         print(f"Error in decay_scores_periodically: {e}")
 
 
+def decay_val_scores_periodically():
+    try:
+        while True:
+            decay_validator_score()
+            time.sleep(base["TIME"]["VAL_DECAY"])
+    except Exception as e:
+        print(f"Error in decay_val_scores_periodically: {e}")
+
+
 async def main():
     start_server = websockets.serve(
         iNode_protocol,
@@ -81,10 +90,12 @@ async def main():
         target=update_validators_periodically, daemon=True
     )
     scores_thread = threading.Thread(target=decay_scores_periodically, daemon=True)
+    val_score_thread = threading.Thread(target=decay_scores_periodically, daemon=True)
     fastapi_thread.start()
     fetch_val_thread.start()
     balance_thread.start()
     scores_thread.start()
+    val_score_thread.start()
 
     periodic_task = asyncio.create_task(periodic_process_transactions())
 
