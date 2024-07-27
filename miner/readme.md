@@ -1,57 +1,84 @@
-# Miner
+# TTI Miner
 
-This miner is designed to communicate with pools, receive tasks, compute using the logic in the codebase, and return the output to the pool.
+This TTI Miner is designed to connect with mining pools, receive computational tasks, process them, and return the results to the pool efficiently.
 
 ## Features
 
-- Connects to a specified mining pool using WebSocket.
-- Receives and processes computational tasks.
-- Submits computed output back to the pool.
+- **Seamless Pool Connection**: Connects to specified mining pools using WebSocket.
+- **Task Processing**: Receives and processes computational tasks with high efficiency.
+- **Automated Submission**: Submits computed results back to the pool automatically.
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure the following are installed before starting:
 
-- Python 3.6 or higher
-- `pip` for installing Python packages
+- Python 3.11 or higher
+- `pip` for Python package management
 - An active internet connection
 
 ## Installation
 
-1. **Clone the Repository**
+Follow these steps to install TTI Miner:
 
-   Clone the Miner repository to your local machine using:
+### 1. Clone the Repository
 
-   ```bash
-   git clone  `url`
-   ```
+Clone the Miner repository to your local machine:
 
-2. **Install Dependencies**
+```bash
+git clone https://github.com/upowai/TTI-MINER.git
+```
 
-   Navigate to the cloned directory and install the required Python packages:
+### 2. Install Dependencies
 
-   ```bash
-   pip3 install -r requirements.txt
-   ```
+Navigate to the cloned directory and install the required Python packages:
+
+```bash
+cd TTI-MINER
+python3.11 -m venv miner
+source miner/bin/activate
+pip3 install -r requirements.txt
+```
+
+### 3. Make the Script Executable
+
+Make the setup script executable:
+
+```bash
+chmod +x ./run_setup.sh
+```
+
+### 4. Run the Setup Script
+
+Run the setup script to download necessary models and perform the required setup:
+
+```bash
+./run_setup.sh
+```
 
 ## Configuration
 
-Miner requires specific command-line arguments to start:
+TTI Miner requires specific command-line arguments to start:
 
-- `--MINER_POOL_IP`: The IP address of the miner pool.
-- `--MINER_POOL_PORT`: The port number of the miner pool.
+- `--MINER_POOL_IP`: The IP address of the mining pool.
+- `--MINER_POOL_PORT`: The port number of the mining pool.
 - `--WALLET_ADDRESS`: Your wallet address for receiving mining rewards.
+- `--ENDPOINT`: The endpoint for communication (default: `"http://192.99.7.175:9003"`).
+- `--DEVICE`: GPU device number for computation.
 
 ## Usage
 
-To run Miner, use the following command:
+To run TTI Miner, use the following command:
 
 ```bash
-python3 miner.py --MINER_POOL_IP "127.0.0.1" --MINER_POOL_PORT 5501 --WALLET_ADDRESS "your_wallet_address"
+python miner.py --WALLET_ADDRESS "your_wallet_address" --MINER_POOL_IP "192.99.7.175" --MINER_POOL_PORT 4403 --ENDPOINT "http://192.99.7.175:9003" --DEVICE 0
 ```
 
-Replace `"127.0.0.1"`, `5501`, and `"your_wallet_address"` with the appropriate miner pool IP, port, and your wallet address.
+Replace `"192.99.7.175"`, `4403`, and `"your_wallet_address"` with the appropriate miner pool IP, port, and your wallet address.
 
 ## Contributing
 
-Contributions to Miner are welcome. Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
+Contributions are welcome! Please ensure your code adheres to the project's coding standards and includes appropriate tests.
+
+---
+
+By following these steps, you'll be able to set up and run your TTI Miner seamlessly. Happy mining!
