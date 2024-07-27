@@ -474,6 +474,7 @@ def is_task_valid(val_id: str) -> bool:
 
         if not task:
             # If no document is found, return False
+            logging.info(f"no such task found: {val_id}")
             return False
 
         # Parse the createdAt field
@@ -485,6 +486,7 @@ def is_task_valid(val_id: str) -> bool:
 
         # Check if more than 1 hour has passed
         if current_time - created_at > timedelta(hours=1):
+            logging.info(f"task old, more than 1 hour has passed")
             return False
 
         return True
