@@ -63,7 +63,7 @@ async def periodic_delete_completed_task():
 def update_balance_periodically():
     try:
         while True:
-            # process_all_transactions()
+            process_all_transactions()
             time.sleep(base["TIME"]["PUSH_TX"])
     except Exception as e:
         print(f"Error in update_balance_periodically: {e}")

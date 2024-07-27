@@ -695,7 +695,7 @@ async def select_task_for_validation():
 
         timer = base["TIME"]["VALIDATION_DELETE_TIMER"]
         if time_difference > timedelta(minutes=timer):
-            print("Time difference is greater than 3 minute")
+            print(f"Time difference is greater than {timer} minute")
             if (
                 task["task1"]["condition"] == "pending"
                 or task["task1"]["condition"] == "dispatch"
@@ -703,7 +703,7 @@ async def select_task_for_validation():
                 ValidationTask.delete_one({"_id": task["_id"]})
                 return False, json.dumps(
                     {
-                        "error": "Task is pending/dispatch for more than 3 minutes, hence deleted"
+                        "error": f"Task is pending/dispatch for more than {timer}, hence deleted"
                     }
                 )
 
