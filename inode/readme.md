@@ -4,7 +4,7 @@
 
 Before setting up the iNode Server, ensure you have the following installed:
 
-- Python 3.9 or higher
+- Python 3.11 or higher
 - MongoDB
 - Required Python libraries (listed in `requirements.txt`)
 
@@ -22,6 +22,16 @@ To Install Mongodb on Ubuntu you can use the `install_mongodb.sh` script.
 2. **Run the Script:**
    - Execute the script by running `./install_mongodb.sh` in the terminal.
    - If necessary, the script will ask for your password to grant permission for installation steps that require superuser access.
+
+### Setup Configuration File
+
+Rename the `layout.example` file to `layout.json`, use the following command in your terminal:
+
+```sh
+mv layout.example layout.json
+```
+
+make modifications according to your settings
 
 ## Installation
 
