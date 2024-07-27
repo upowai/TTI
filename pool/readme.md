@@ -1,14 +1,16 @@
 # uPow pool
 
+## Prerequisites
+
+Before setting up the pool Server, ensure you have the following installed:
+
+- Python 3.11 or higher
+- MongoDB
+- Required Python libraries (listed in `requirements.txt`)
+
 ## Configuration
 
 Before diving into the MinerPool setup, it's essential to configure the system correctly. The `config.py` file contains several critical settings that need to be adjusted according to your network setup and preferences.
-
-## Enable port for accepting connections (Ubuntu)
-
-```bash
-  sudo ufw allow 5503
-```
 
 ## Installing Mongodb
 
@@ -24,6 +26,16 @@ To Install Mongodb on Ubuntu you can use the `install_mongodb.sh` script.
 2. **Run the Script:**
    - Execute the script by running `./install_mongodb.sh` in the terminal.
    - If necessary, the script will ask for your password to grant permission for installation steps that require superuser access.
+
+### Setup Configuration File
+
+Rename the `layout.example` file to `layout.json`, use the following command in your terminal:
+
+```sh
+mv layout.example layout.json
+```
+
+make modifications according to your settings
 
 ## Getting Started
 

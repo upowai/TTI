@@ -211,7 +211,7 @@ async def connect():
                     continue
 
                 try:
-                    print("pass_ok")
+
                     # Use HTTP request to upload images to the validator's endpoint
                     status, response = upload_images_to_endpoint(validator_endpoint)
                     logging.info(f"Response from validator {validator_id}: {response}")

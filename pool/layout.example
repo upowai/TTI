@@ -1,0 +1,67 @@
+{
+  "FAST_API": {
+    "FAST_API_URL": "0.0.0.0",
+    "FAST_API_PORT": 9003
+  },
+  "MONGOD_DB": {
+    "MONGO_URL": "mongodb://localhost:27017/"
+  },
+  "WHITE_LIST": {
+    "ACTIVE": "False",
+    "DEFAULT_DIFFICULTY": 5,
+    "BASE_MINER_COUNT": 1,
+    "INCREASE_DIFFICULTY": 100,
+    "MAX_MINERS": 5,
+    "IMMUNITY": 600
+  },
+  "RATE_LIMIT": {
+    "RATE_LIMIT1": "10/minute",
+    "RATE_LIMIT2": "1/minute"
+  },
+  "AWARD_SYSTEM": {
+    "FEE": "18%",
+    "MINER_REWARD": "82%"
+  },
+  "URLS": {
+    "API_URL": "https://api.upow.ai",
+    "NODE_URL": "https://api.upow.ai",
+    "MINE": "http://0.0.0.0:9003/generate_challenge/",
+    "config_3": "value_3"
+  },
+  "TIME": {
+    "CHECK_INTERVAL": 180,
+    "PUSH_TX": 60,
+    "GEN_VALIDATION_TASK": 60,
+    "VALIDATION_DELETE_TIMER": 60,
+    "PEERS_TIME_MIN": 2,
+    "FETCH_PEER_SEC": 180,
+    "DELETE_TASK": 600
+  },
+  "POOL_MAIN_SOCKET": {
+    "IP": "0.0.0.0",
+    "PORT": "4403"
+  },
+  "POOL_VALIDATION_SOCKET": {
+    "IP": "0.0.0.0",
+    "PORT": "4405"
+  },
+  "INODE_INFO": {
+    "URL": "http://0.0.0.0:9001/validators"
+  },
+  "POOL_WALLETS": {
+    "POOL_ADDRESS": "POOL_ADDRESS",
+    "POOL_REWARD_ADDRESS": "POOL_REWARD_ADDRESS"
+  },
+  "REWARD_TRACKING": {
+    "BLOCK_HEIGHT": 207000
+  },
+  "MAX_CONCURRENT": {
+    "MINERS": 1500,
+    "VALIDATORS": 1500
+  },
+  "PROMPT": {
+    "NEGATIVE": "(worst quality:2),(low quality:2),(normal quality:2),lowres,watermark",
+    "WIDTH": 512,
+    "HEIGHT": 768
+  }
+}
