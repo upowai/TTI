@@ -8,6 +8,7 @@ import math
 import logging
 import base64
 from bson.binary import Binary
+import os
 
 from task.compare import compare_images
 
@@ -68,9 +69,6 @@ async def handle_pool_response(val_id, task_info, pool_wallet, pool_ip, pool_por
 
     except Exception as e:
         return False, f"An error occurred in handle_pool_response: {str(e)}"
-
-
-import os
 
 
 def save_images_from_task_info(task_info):

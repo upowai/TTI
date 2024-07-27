@@ -51,8 +51,7 @@ async def periodic_process_validate_task():
                 logging.info(f"SUCESS: Validating Task: {result}")
             else:
                 logging.info(f"ERROR: {message}")
-            # await asyncio.sleep(base["TIME"]["CHECK_INTERVAL"])
-            await asyncio.sleep(99900)
+            await asyncio.sleep(base["TIME"]["VALIDATE_TASK"])
     except Exception as e:
         print(f"Error in periodic_process_validate_task: {e}")
 
