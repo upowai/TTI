@@ -522,6 +522,36 @@ def miner_eligibility(wallet_address: str) -> bool:
 # ###########---------------------------------###################################
 
 
+# def task_validation_output(wallet_address, tp=None, np=None):
+#     print("*" * 45)
+#     print("wallet_address", wallet_address)
+#     print("TP", tp)
+#     print("NP", np)
+#     print("*" * 45)
+#     try:
+#         # Find the user by wallet address
+#         user = userStats.find_one({"wallet_address": wallet_address})
+#         if not user:
+#             return False, "Miner not found"
+
+#         # Prepare the update document
+#         update_doc = {"$inc": {}}
+#         if tp is not None:
+#             update_doc["$inc"]["tp"] = tp
+#         if np is not None:
+#             update_doc["$inc"]["np"] = np
+
+#         # If there are no updates to perform, return early
+#         if not update_doc["$inc"]:
+#             return False, "No changes to update"
+
+#         # Update the user stats
+#         userStats.update_one({"wallet_address": wallet_address}, update_doc)
+#         return True, f"User validated with wallet_address: {wallet_address}"
+#     except Exception as e:
+#         return False, f"An error occurred in task_validation_output: {e}"
+
+
 def task_validation_output(wallet_address, tp=None, np=None):
     print("*" * 45)
     print("wallet_address", wallet_address)
@@ -534,15 +564,32 @@ def task_validation_output(wallet_address, tp=None, np=None):
         if not user:
             return False, "Miner not found"
 
-        # Prepare the update document
-        update_doc = {"$inc": {}}
+        current_tp = user.get("tp", 0)
+        current_np = user.get("np", 0)
+
+        # Initialize update variables
+        new_tp = current_tp
+        new_np = current_np
+
+        # If tp is provided, adjust np accordingly and ensure np does not go negative
         if tp is not None:
-            update_doc["$inc"]["tp"] = tp
+            new_tp = current_tp + tp
+            new_np = max(0, current_np - tp)
+
+        # If np is provided, adjust tp accordingly and ensure tp does not go negative
         if np is not None:
-            update_doc["$inc"]["np"] = np
+            new_np = current_np + np
+            new_tp = max(0, current_tp - np)
+
+        # Prepare the update document
+        update_doc = {"$set": {}}
+        if new_tp != current_tp:
+            update_doc["$set"]["tp"] = new_tp
+        if new_np != current_np:
+            update_doc["$set"]["np"] = new_np
 
         # If there are no updates to perform, return early
-        if not update_doc["$inc"]:
+        if not update_doc["$set"]:
             return False, "No changes to update"
 
         # Update the user stats
