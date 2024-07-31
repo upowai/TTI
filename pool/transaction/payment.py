@@ -65,7 +65,12 @@ async def sign_and_push_transactions(transactions):
                     submittedTransactions.insert_one(transaction_doc)
                     userTxReference.update_one(
                         {"wallet_address": wallet_address},
-                        {"$push": {"transactions": transaction_hash}},
+                        {
+                            "$push": {
+                                "transactions": transaction_hash,
+                                "timestamp": datetime.utcnow(),
+                            }
+                        },
                         upsert=True,
                     )
                     tempWithdrawals.delete_one({"id": id})
