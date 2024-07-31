@@ -67,8 +67,14 @@ async def sign_and_push_transactions(transactions):
                         {"wallet_address": wallet_address},
                         {
                             "$push": {
-                                "transactions": transaction_hash,
-                                "timestamp": datetime.utcnow(),
+                                "transactions": {
+                                    "$each": [
+                                        {
+                                            "hash": transaction_hash,
+                                            "timestamp": datetime.utcnow(),
+                                        }
+                                    ]
+                                }
                             }
                         },
                         upsert=True,
