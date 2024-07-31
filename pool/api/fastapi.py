@@ -24,7 +24,9 @@ from database.db_requests import (
     deduct_balance_from_wallet,
     deduct_balance_from_poolowner,
     retrieve_image,
+    get_latest_transactions,
 )
+
 from utils.layout import base
 
 from task.task import handle_miner_response, generate_task
@@ -354,19 +356,21 @@ async def poolowner_deduct_balance(
     return {"message": f"Amount deducted successfully: {response}"}
 
 
-# @app.get("/latestwithdraws/")
-# @limiter.limit(base["RATE_LIMIT"]["RATE_LIMIT1"])
-# async def latest_withdraws(request: Request, wallet_address: str):
-#     if not wallet_address:
-#         raise HTTPException(status_code=400, detail="Wallet address must be provided")
+@app.get("/latestwithdraws/")
+@limiter.limit(base["RATE_LIMIT"]["RATE_LIMIT1"])
+async def latest_withdraws(
+    request: Request, wallet_address: str, page: str, page_size: str
+):
+    if not wallet_address:
+        raise HTTPException(status_code=400, detail="Wallet address must be provided")
 
-#     result = get_miner_TransactionsPushed(wallet_address)
+    result = get_latest_transactions(wallet_address, page, page_size)
 
-#     if not result.get("success", False):
-#         message = result.get("message", "An unexpected error occurred")
-#         status_code = 404 if "No details found" in message else 500
-#         raise HTTPException(status_code=status_code, detail=message)
-#     return result.get("data", {})
+    if not result.get("success", False):
+        message = result.get("message", "An unexpected error occurred")
+        status_code = 404 if "No details found" in message else 500
+        raise HTTPException(status_code=status_code, detail=message)
+    return result.get("data", {})
 
 
 @app.post("/task_upload")
