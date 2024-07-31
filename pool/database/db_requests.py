@@ -5,7 +5,7 @@ from database.mongodb import (
     miners,
     AiTask,
     ResponseTask,
-    submittedTransactions,
+    userTxReference,
 )
 from reward_logic.percentage import round_up_decimal_new
 from transaction.payment import add_transaction_to_batch
@@ -263,7 +263,7 @@ def retrieve_image(retrieve_id=None):
 def get_latest_transactions(wallet_address, page=1, page_size=10):
     try:
         # Find the document with the given wallet address
-        user_doc = submittedTransactions.find_one({"wallet_address": wallet_address})
+        user_doc = userTxReference.find_one({"wallet_address": wallet_address})
 
         if not user_doc:
             return {"error": "Wallet address not found"}
