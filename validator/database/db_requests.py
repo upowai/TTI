@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from database.mongodb import userStats, entityOwners
+from database.mongodb import userStats, entityOwners, userTxReference
 from reward_logic.percentage import round_up_decimal_new
 from transaction.payment import add_transaction_to_batch
 
@@ -161,3 +161,46 @@ def deduct_balance_from_entityOwners(amount_to_deduct):
             None,
             f"deduct_balance_from_pool An unexpected error occurred - {str(e)}",
         )
+
+
+def get_latest_transactions(wallet_address, page=1, page_size=10):
+    try:
+        # Find the document with the given wallet address
+        user_doc = userTxReference.find_one({"wallet_address": wallet_address})
+
+        if not user_doc:
+            return {"error": "Wallet address not found"}
+
+        transactions = user_doc.get("transactions", [])
+
+        # Separate transactions with and without timestamps
+        transactions_with_time = []
+        transactions_without_time = []
+
+        for tx in transactions:
+            if isinstance(tx, dict) and "timestamp" in tx:
+                transactions_with_time.append(tx)
+            else:
+                transactions_without_time.append({"hash": tx, "timestamp": None})
+
+        # Sort transactions with time by timestamp in descending order
+        transactions_with_time.sort(key=lambda x: x["timestamp"], reverse=True)
+
+        # Combine both lists (transactions without time come last)
+        sorted_transactions = transactions_with_time + transactions_without_time
+
+        # Paginate the results
+        total_transactions = len(sorted_transactions)
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        paginated_transactions = sorted_transactions[start_index:end_index]
+
+        return {
+            "page": page,
+            "page_size": page_size,
+            "total_transactions": total_transactions,
+            "transactions": paginated_transactions,
+        }
+
+    except Exception as e:
+        return {"error": str(e)}

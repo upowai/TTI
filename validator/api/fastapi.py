@@ -20,6 +20,7 @@ from database.db_requests import (
     get_balance_entityOwners,
     deduct_balance_from_wallet,
     deduct_balance_from_entityOwners,
+    get_latest_transactions,
 )
 from task.task import handle_pool_response
 from utils.layout import base
@@ -166,19 +167,30 @@ async def valowner_deduct_balance(
     return {"message": f"Amount deducted successfully: {response}"}
 
 
-# @app.get("/latestwithdraws/")
-# @limiter.limit(base["RATE_LIMIT"]["RATE_LIMIT1"])
-# async def latest_withdraws(request: Request, wallet_address: str):
-#     if not wallet_address:
-#         raise HTTPException(status_code=400, detail="Wallet address must be provided")
+@app.get("/latestwithdraws/")
+@limiter.limit(base["RATE_LIMIT"]["RATE_LIMIT1"])
+async def latest_withdraws(
+    request: Request, wallet_address: str, page: str, page_size: str
+):
+    if not wallet_address:
+        raise HTTPException(status_code=400, detail="Wallet address must be provided")
 
-#     result = get_miner_TransactionsPushed(wallet_address)
+    try:
+        page = int(page)
+        page_size = int(page_size)
+    except ValueError:
+        raise HTTPException(
+            status_code=400, detail="Page and page size must be integers"
+        )
 
-#     if not result.get("success", False):
-#         message = result.get("message", "An unexpected error occurred")
-#         status_code = 404 if "No details found" in message else 500
-#         raise HTTPException(status_code=status_code, detail=message)
-#     return result.get("data", {})
+    result = get_latest_transactions(wallet_address, page, page_size)
+
+    if "error" in result:
+        message = result["error"]
+        status_code = 404 if "not found" in message.lower() else 500
+        raise HTTPException(status_code=status_code, detail=message)
+
+    return result
 
 
 @app.post("/upload_tasks/")

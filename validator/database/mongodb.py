@@ -34,6 +34,7 @@ db = get_db_connection()
 userStats = db.userStats
 tempWithdrawals = db.tempWithdrawals
 submittedTransactions = db.submittedTransactions
+userTxReference = db.userTxReference
 verifiedTransactions = db.verifiedTransactions
 rewardLog = db.rewardLog
 entityOwners = db.entityOwners

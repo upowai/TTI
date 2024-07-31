@@ -15,6 +15,7 @@ from database.mongodb import (
     verifiedTransactions,
     errorTransactions,
     catchTransactions,
+    userTxReference,
 )
 
 
@@ -62,6 +63,22 @@ async def sign_and_push_transactions(transactions):
                                     "amount": amounts,
                                     "timestamp": datetime.utcnow(),
                                     "transaction_type": transaction_type,
+                                }
+                            }
+                        },
+                        upsert=True,
+                    )
+                    userTxReference.update_one(
+                        {"wallet_address": wallet_address},
+                        {
+                            "$push": {
+                                "transactions": {
+                                    "$each": [
+                                        {
+                                            "hash": transaction_hash,
+                                            "timestamp": datetime.utcnow(),
+                                        }
+                                    ]
                                 }
                             }
                         },
