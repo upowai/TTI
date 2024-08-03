@@ -157,7 +157,7 @@ def validate_tasks():
 
             # Static numbers for tp and np assignment
             tp_number = 1
-            np_number = 1
+            np_number = 5
 
             for wallet in unique_wallets:
                 wallet_address = wallet["wallet_address"]
