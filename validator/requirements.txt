@@ -1,4 +1,4 @@
-upowpy
+upowpy== 1.0.8
 fastapi==0.110.3
 pydantic==2.7.1
 pydantic_core==2.18.2
