@@ -62,7 +62,6 @@ def decay_scores_periodically():
     try:
         while True:
             decay_pool_score()
-            decay_validator_score()
             time.sleep(base["TIME"]["DECAY"])
     except Exception as e:
         print(f"Error in decay_scores_periodically: {e}")
