@@ -61,6 +61,7 @@ def deduct_balance_from_wallet(delegate, amount_to_deduct):
             return None, "Error: Delegate Wallet address not found."
 
         balance = Decimal(user.get("balance", 0))
+        balance = round_up_decimal_new(balance)
         if balance is None or balance < Decimal("0.001"):
             return None, "Error: Insufficient balance for deduction."
 
@@ -121,6 +122,7 @@ def deduct_balance_from_entityOwners(amount_to_deduct):
             return None, "Error: validator reward not found."
 
         balance = Decimal(entry.get("amount", 0))
+        balance = round_up_decimal_new(balance)
         if balance is None or balance < Decimal("0.001"):
             return None, "Error: Insufficient balance for deduction."
 
