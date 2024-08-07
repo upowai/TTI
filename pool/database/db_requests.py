@@ -93,12 +93,14 @@ def deduct_balance_from_wallet(wallet_address, amount_to_deduct):
             return None, "Error: Wallet address not found."
 
         balance = Decimal(user.get("balance", 0))
+        balance = round_up_decimal_new(balance)
         if balance is None or balance < Decimal("0.001"):
             return None, "Error: Insufficient balance for deduction."
 
         # Calculate the new balance
         new_balance = balance - amount_to_deduct
-        if new_balance < 0:
+
+        if new_balance < Decimal("0"):
             return None, "Error: Deduction amount exceeds current balance."
 
         new_balance = round_up_decimal_new(new_balance)
@@ -153,6 +155,7 @@ def deduct_balance_from_poolowner(amount_to_deduct):
             return None, "Error: Pool reward not found."
 
         balance = Decimal(pool.get("amount", 0))
+        balance = round_up_decimal_new(balance)
         if balance is None or balance < Decimal("0.001"):
             return None, "Error: Insufficient balance for deduction."
 
