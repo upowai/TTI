@@ -41,6 +41,7 @@ def update_delegate_balances(amount, sorted_delegates, block_range_str):
             else:
                 previous_balance = Decimal("0.0")
                 new_balance = amount_to_add
+                new_balance = round_up_decimal_new(new_balance)
 
             # Update or insert the delegate balance in MongoDB
             userStats.update_one(
