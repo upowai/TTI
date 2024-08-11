@@ -43,6 +43,7 @@ def mine(challenge, wallet_address):
     nonce = 0
 
     start_time = time.time()
+    last_log_time = start_time
     hashes_processed = 0
 
     while True:
@@ -56,12 +57,12 @@ def mine(challenge, wallet_address):
             return nonce, hash_result
         nonce += 1
         current_time = time.time()
-        if current_time - start_time >= 5:
+        if current_time - last_log_time >= 5:
             hashes_per_second = hashes_processed / (current_time - start_time)
-            print(
-                f"\rProcessed {hashes_processed / 1_000_000:.2f} million hashes so far",
-                end="",
+            logger.info(
+                f"Processed {hashes_processed / 1_000_000:.2f} million hashes so far (Rate: {hashes_per_second / 1_000_000:.2f} million hashes/second)"
             )
+            last_log_time = current_time
 
 
 def submit_result(challenge, nonce, result_hash, wallet_address):
