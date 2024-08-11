@@ -55,6 +55,40 @@ Run the setup script to download necessary models and perform the required setup
 ./run_setup.sh
 ```
 
+### 5. Registering with GPU
+
+To register using your GPU, follow these steps:
+
+#### Step 1: Compile the CUDA Shared Library
+
+Run the following command to compile the CUDA shared library:
+
+```bash
+nvcc -o cuda.so --shared -Xcompiler -fPIC sha256.cu
+```
+
+This command will compile the `sha256.cu` file and create a `cuda.so` shared library file.
+
+#### Step 2: Run the GPU Registration Script
+
+Once the `cuda.so` file is created, you can proceed with the registration by running the following Python script:
+
+```bash
+python3 regGPU.py --wallet "wallet_address"
+```
+
+Replace `"wallet_address"` with your actual wallet address.
+
+### 6. Registering with CPU
+
+If you prefer to register using your CPU, simply run the following Python script:
+
+```bash
+python3 regCPU.py --wallet "wallet_address"
+```
+
+Again, replace `"wallet_address"` with your actual wallet address.
+
 ## Configuration
 
 TTI Miner requires specific command-line arguments to start:
