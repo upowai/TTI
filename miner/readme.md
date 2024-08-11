@@ -55,7 +55,17 @@ Run the setup script to download necessary models and perform the required setup
 ./run_setup.sh
 ```
 
-### 5. Registering with GPU
+### 5. Registering with CPU
+
+If you prefer to register using your CPU, simply run the following Python script:
+
+```bash
+python3 regCPU.py --wallet "wallet_address"
+```
+
+replace `"wallet_address"` with your actual wallet address.
+
+### 6. Registering with GPU
 
 To register using your GPU, follow these steps:
 
@@ -78,16 +88,6 @@ python3 regGPU.py --wallet "wallet_address"
 ```
 
 Replace `"wallet_address"` with your actual wallet address.
-
-### 6. Registering with CPU
-
-If you prefer to register using your CPU, simply run the following Python script:
-
-```bash
-python3 regCPU.py --wallet "wallet_address"
-```
-
-Again, replace `"wallet_address"` with your actual wallet address.
 
 ## Configuration
 
