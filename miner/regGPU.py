@@ -58,8 +58,9 @@ def mine(challenge, wallet_address):
         current_time = time.time()
         if current_time - start_time >= 5:
             hashes_per_second = hashes_processed / (current_time - start_time)
-            logger.info(
-                f"Processed {hashes_processed / 1_000_000:.2f} million hashes so far (Rate: {hashes_per_second / 1_000_000:.2f} million hashes/second)"
+            print(
+                f"\rProcessed {hashes_processed / 1_000_000:.2f} million hashes so far",
+                end="",
             )
 
 
