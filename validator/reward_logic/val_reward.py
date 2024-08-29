@@ -20,11 +20,11 @@ def update_entityOwners_reward(amount):
         if entry:
             current_amount = Decimal(str(entry.get("amount", "0.0")))
             wallet_address = entry.get(
-                "wallet_address", base["VALIDATOR_WALLETS"]["VAL_ADDRESS"]
+                "wallet_address", base["VALIDATOR_WALLETS"]["VAL_REWARD_ADDRESS"]
             )
         else:
             current_amount = Decimal("0.0")
-            wallet_address = base["VALIDATOR_WALLETS"]["VAL_ADDRESS"]
+            wallet_address = base["VALIDATOR_WALLETS"]["VAL_REWARD_ADDRESS"]
 
         new_amount = round_up_decimal_new(current_amount + amount)
         current_time_utc = datetime.utcnow().isoformat()
