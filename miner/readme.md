@@ -96,7 +96,7 @@ TTI Miner requires specific command-line arguments to start:
 - `--MINER_POOL_IP`: The IP address of the mining pool.
 - `--MINER_POOL_PORT`: The port number of the mining pool.
 - `--WALLET_ADDRESS`: Your wallet address for receiving mining rewards.
-- `--ENDPOINT`: The endpoint for communication (default: `"http://192.99.7.175:9003"`).
+- `--ENDPOINT`: The endpoint for communication (default: `"https://pooltti.upow.network"`).
 - `--DEVICE`: GPU device number for computation.
 
 ## Usage
@@ -104,10 +104,10 @@ TTI Miner requires specific command-line arguments to start:
 To run TTI Miner, use the following command:
 
 ```bash
-python miner.py --WALLET_ADDRESS "your_wallet_address" --MINER_POOL_IP "192.99.7.175" --MINER_POOL_PORT 4403 --ENDPOINT "http://192.99.7.175:9003" --DEVICE 0
+python miner.py --WALLET_ADDRESS "your_wallet_address" --MINER_POOL_IP "16.16.99.33" --MINER_POOL_PORT 4403 --ENDPOINT "https://pooltti.upow.network" --DEVICE 0
 ```
 
-Replace `"192.99.7.175"`, `4403`, and `"your_wallet_address"` with the appropriate miner pool IP, port, and your wallet address.
+Replace `"16.16.99.33"`, `4403`, and `"your_wallet_address"` with the appropriate miner pool IP, port, and your wallet address.
 
 ## Contributing
 
